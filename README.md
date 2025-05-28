@@ -7,7 +7,7 @@ This library provides a simple way to export Discord channel
 conversations in both detailed and simplified formats, making it easy to
 analyze or process Discord community discussions.
 
-## Installation
+## Installation & Setup
 
 Install from PyPI:
 
@@ -23,13 +23,11 @@ cd discord_fetch
 pip install -e .
 ```
 
-## Discord Bot Setup
-
 <details>
 
 <summary>
 
-Click to expand
+Discord Bot Setup (Click to expand)
 </summary>
 
 Before using this tool, you need to create a Discord bot and obtain a
@@ -75,7 +73,7 @@ DISCORD_TOKEN=your_bot_token_here
 
 </details>
 
-## Getting Channel IDs
+### Getting Channel IDs
 
 To fetch messages from a channel, you need its Channel ID:
 
@@ -103,15 +101,7 @@ command:
      hierarchies.                                                                   
      By default, outputs simplified conversation data as JSON to stdout (suitable   
      for piping). Use --save-to-files to save both original and simplified data to  
-     files with summary output.                                                     
-     Examples:     # Output simplified JSON to stdout     fetch_discord_msgs        
-     1234567890123456789          # Save files and show summary                     
-     fetch_discord_msgs 1234567890123456789 --save-to-files          # Pipe         
-     simplified data to another tool     fetch_discord_msgs 1234567890123456789 |   
-     jq '.conversations[0]'                                                         
-     Args:     channel_id: Discord channel ID to fetch messages from     limit:     
-     Maximum number of messages to fetch (None = all messages)     save_to_files:   
-     Save both original and simplified data to files and print summary              
+     files with summary output.s                                                    
                                                                                     
     ╭─ Arguments ──────────────────────────────────────────────────────────────────╮
     │ *    channel_id      INTEGER  Discord channel ID to fetch messages from      │
@@ -142,12 +132,28 @@ fetch_discord_msgs 1369370266899185746 --save-to-files --verbose
 # Limit to last 100 messages and output to stdout
 fetch_discord_msgs 1369370266899185746 --limit 100
 
-# Pipe simplified data to another tool (like jq)
+
 fetch_discord_msgs 1369370266899185746 | jq '.conversations[0]'
 
 # Save to files and process specific conversations
 fetch_discord_msgs 1369370266899185746 --save-to-files | jq '.conversations[] | select(.replies | length > 5)'
 ```
+
+**Live example from real discord**
+
+``` python
+# Pipe simplified data to another tool (like jq)
+!fetch_discord_msgs 1369370266899185746 | jq '.conversations[0]'
+```
+
+    Connected as hamml#3190
+    {
+      "main_message": {
+        "author": "davidh5633",
+        "content": "Seems relevant to this course topic:\n\nEvaluation Driven Development for Agentic Systems\nhttps://www.newsletter.swirlai.com/p/evaluation-driven-development-for?utm_source=tldrai"
+      },
+      "replies": []
+    }
 
 ## CLI Output Modes
 
@@ -219,9 +225,8 @@ print(f"Fetched {len(simplified['conversations'])} conversations")
 correct - Ensure your bot is a member of the server - Check that the bot
 has “View Channels” permission
 
-**“DISCORD_TOKEN env variable not found”** - Make sure your `.env` file
-exists and contains `DISCORD_TOKEN=your_token` - Verify the `.env` file
-is in the correct directory
+**“DISCORD_TOKEN env variable not found”** - Set your environment
+variable `DISCORD_TOKEN=your_token`
 
 **“Could not fetch archived threads”** - This is usually not critical -
 some archived threads may not be accessible - The main channel messages
@@ -233,18 +238,3 @@ Discord has rate limits for API requests. For large channels: - The tool
 automatically handles rate limiting - Very large channels (\>10k
 messages) may take several minutes - Consider using the `--limit`
 parameter for testing
-
-## Example
-
-``` python
-!fetch_discord_msgs 1369370266899185746 | jq '.conversations[0]'
-```
-
-    Connected as hamml#3190
-    {
-      "main_message": {
-        "author": "davidh5633",
-        "content": "Seems relevant to this course topic:\n\nEvaluation Driven Development for Agentic Systems\nhttps://www.newsletter.swirlai.com/p/evaluation-driven-development-for?utm_source=tldrai"
-      },
-      "replies": []
-    }
