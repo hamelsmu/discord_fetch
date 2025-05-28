@@ -23,57 +23,50 @@ cd discord_fetch
 pip install -e .
 ```
 
-### Discord Bot Setup
-
-<details>
-
-<summary>
-
-(Click to expand)
-</summary>
-
-Before using this tool, you need to create a Discord bot and obtain a
-token:
-
-### 1. Create a Discord Application
-
-1.  Go to the [Discord Developer
-    Portal](https://discord.com/developers/applications)
-2.  Click “New Application” and give it a name
-3.  Navigate to the “Bot” section in the sidebar
-4.  Click “Add Bot”
-5.  Under the “Token” section, click “Copy” to get your bot token
-
-### 2. Required Bot Permissions
-
-Your bot needs the following permissions: - **View Channels** - To see
-the channels in the server - **Read Message History** - To fetch
-historical messages - **Read Messages/View Channels** - Basic read
-access
-
-### 3. Bot Scopes and OAuth2
-
-When inviting your bot to a server, use these scopes: - `bot` - Basic
-bot permissions - `applications.commands` (optional) - If you plan to
-add slash commands
-
-### 4. Invite the Bot to Your Server
-
-1.  In the Discord Developer Portal, go to “OAuth2” \> “URL Generator”
-2.  Select the `bot` scope
-3.  Select the required permissions listed above
-4.  Copy the generated URL and open it in your browser
-5.  Select the server you want to add the bot to
-
-### 5. Environment Setup
-
-Create this environment variable
-
-``` env
-DISCORD_TOKEN=your_bot_token_here
-```
-
-</details>
+> [!NOTE]
+>
+> ### Discord Bot Setup
+>
+> Before using this tool, you need to create a Discord bot and obtain a
+> token:
+>
+> ### 1. Create a Discord Application
+>
+> 1.  Go to the [Discord Developer
+>     Portal](https://discord.com/developers/applications)
+> 2.  Click “New Application” and give it a name
+> 3.  Navigate to the “Bot” section in the sidebar
+> 4.  Click “Add Bot”
+> 5.  Under the “Token” section, click “Copy” to get your bot token
+>
+> ### 2. Required Bot Permissions
+>
+> Your bot needs the following permissions: - **View Channels** - To see
+> the channels in the server - **Read Message History** - To fetch
+> historical messages - **Read Messages/View Channels** - Basic read
+> access
+>
+> ### 3. Bot Scopes and OAuth2
+>
+> When inviting your bot to a server, use these scopes: - `bot` - Basic
+> bot permissions - `applications.commands` (optional) - If you plan to
+> add slash commands
+>
+> ### 4. Invite the Bot to Your Server
+>
+> 1.  In the Discord Developer Portal, go to “OAuth2” \> “URL Generator”
+> 2.  Select the `bot` scope
+> 3.  Select the required permissions listed above
+> 4.  Copy the generated URL and open it in your browser
+> 5.  Select the server you want to add the bot to
+>
+> ### 5. Environment Setup
+>
+> Create this environment variable
+>
+> ``` env
+> DISCORD_TOKEN=your_bot_token_here
+> ```
 
 ### Getting Channel IDs
 
