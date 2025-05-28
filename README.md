@@ -56,14 +56,11 @@ add slash commands
 
 ### 5. Environment Setup
 
-Create a `.env` file in your project directory:
+Create this environment variable
 
 ``` env
 DISCORD_TOKEN=your_bot_token_here
 ```
-
-**Important:** Never commit your bot token to version control. Add
-`.env` to your `.gitignore` file.
 
 ## Getting Channel IDs
 
