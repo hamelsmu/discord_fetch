@@ -141,7 +141,7 @@ fetch_discord_msgs 1369370266899185746 | jq '.conversations[0]'
 fetch_discord_msgs 1369370266899185746 --save-to-files | jq '.conversations[] | select(.replies | length > 5)'
 ```
 
-**Live example from real discord**
+**Live example**
 
 ``` python
 # Pipe simplified data to another tool (like jq)
