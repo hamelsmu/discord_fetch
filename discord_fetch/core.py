@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['DISCORD_TOKEN', 'prints', 'fetch_channel_complete_history', 'fetch_discord_msgs', 'fetch_discord_msgs_cli', 'main']
 
-# %% ../nbs/core.ipynb 3
+# %% ../nbs/core.ipynb 4
 import discord
 import asyncio
 import json
@@ -13,14 +13,14 @@ from fastcore.utils import in_notebook
 import typer
 from typing_extensions import Annotated
 
-# %% ../nbs/core.ipynb 6
+# %% ../nbs/core.ipynb 7
 def prints(*args, **kwargs): print(*args, file=sys.stderr, **kwargs)
 
-# %% ../nbs/core.ipynb 7
+# %% ../nbs/core.ipynb 8
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 if not DISCORD_TOKEN: raise ValueError("DISCORD_TOKEN env variable not found")
 
-# %% ../nbs/core.ipynb 8
+# %% ../nbs/core.ipynb 9
 async def fetch_channel_complete_history(channel_id, limit=None, save_to_file=True, print_summary=True):
     """
     Fetch complete history from a single Discord channel including threads and replies
@@ -231,7 +231,7 @@ async def fetch_channel_complete_history(channel_id, limit=None, save_to_file=Tr
     await asyncio.sleep(0.5)
     return result
 
-# %% ../nbs/core.ipynb 12
+# %% ../nbs/core.ipynb 13
 def _simplify_channel_data(channel_data, save_to_file=True, print_summary=True):
     """
     Simplify channel data to reduce tokens while preserving conversation structure
@@ -328,7 +328,7 @@ def _simplify_channel_data(channel_data, save_to_file=True, print_summary=True):
     
     return simplified
 
-# %% ../nbs/core.ipynb 13
+# %% ../nbs/core.ipynb 14
 async def fetch_discord_msgs(
     channel_id: int,
     limit: int = None,
@@ -399,7 +399,7 @@ async def fetch_discord_msgs(
         prints(f"❌ Error: {e}")
         return None, None
 
-# %% ../nbs/core.ipynb 14
+# %% ../nbs/core.ipynb 15
 def fetch_discord_msgs_cli(
     channel_id: Annotated[int, typer.Argument(help="Discord channel ID to fetch messages from")],
     limit: Annotated[int, typer.Option(help="Maximum number of messages to fetch")] = None,
