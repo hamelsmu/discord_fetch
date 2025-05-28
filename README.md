@@ -80,9 +80,6 @@ Once installed and configured, you can use the
 command:
 
 ``` python
-# Get help information for the CLI
-from dotenv import load_dotenv
-load_dotenv()
 !fetch_discord_msgs --help
 ```
 
