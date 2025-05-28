@@ -225,7 +225,7 @@ automatically handles rate limiting - Very large channels (\>10k
 messages) may take several minutes - Consider using the `--limit`
 parameter for testing
 
-### Piping and JSON Processing
+## Example
 
 ``` python
 !fetch_discord_msgs 1369370266899185746 | jq '.conversations[0]'
