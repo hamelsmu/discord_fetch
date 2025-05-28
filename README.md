@@ -23,11 +23,13 @@ cd discord_fetch
 pip install -e .
 ```
 
+### Discord Bot Setup
+
 <details>
 
 <summary>
 
-Discord Bot Setup (Click to expand)
+(Click to expand)
 </summary>
 
 Before using this tool, you need to create a Discord bot and obtain a
