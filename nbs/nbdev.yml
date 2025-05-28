@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "discord_fetch"
+  site-url: "https://hamelsmu.github.io/discord_fetch"
+  description: "Fetch message history from discord for LLMs"
+  repo-branch: main
+  repo-url: "https://github.com/hamelsmu/discord_fetch"
