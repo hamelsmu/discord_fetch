@@ -25,6 +25,13 @@ pip install -e .
 
 ## Discord Bot Setup
 
+<details>
+
+<summary>
+
+Click to expand
+</summary>
+
 Before using this tool, you need to create a Discord bot and obtain a
 token:
 
@@ -65,6 +72,8 @@ Create this environment variable
 ``` env
 DISCORD_TOKEN=your_bot_token_here
 ```
+
+</details>
 
 ## Getting Channel IDs
 
@@ -163,14 +172,14 @@ The CLI tool has two main output modes:
 When using `--save-to-files`, the tool generates two types of JSON
 files:
 
-### 1. Original Format (`discord_channel_*_TIMESTAMP.json`)
+##### 1. Original Format (`discord_channel_*_TIMESTAMP.json`)
 
 - Complete message metadata (IDs, timestamps, reactions, etc.)
 - Full thread and reply hierarchies
 - All Discord-specific data preserved
 - Larger file size
 
-### 2. Simplified Format (`discord_simplified_*_TIMESTAMP.json`)
+##### 2. Simplified Format (`discord_simplified_*_TIMESTAMP.json`)
 
 - Conversation-focused structure
 - Removes metadata and IDs

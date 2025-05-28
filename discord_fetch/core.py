@@ -410,22 +410,7 @@ def fetch_discord_msgs_cli(
     Fetch all messages from a Discord channel including threads and reply hierarchies.
     
     By default, outputs simplified conversation data as JSON to stdout (suitable for piping).
-    Use --save-to-files to save both original and simplified data to files with summary output.
-    
-    Examples:
-        # Output simplified JSON to stdout
-        fetch_discord_msgs 1234567890123456789
-        
-        # Save files and show summary
-        fetch_discord_msgs 1234567890123456789 --save-to-files
-        
-        # Pipe simplified data to another tool
-        fetch_discord_msgs 1234567890123456789 | jq '.conversations[0]'
-    
-    Args:
-        channel_id: Discord channel ID to fetch messages from
-        limit: Maximum number of messages to fetch (None = all messages)
-        save_to_files: Save both original and simplified data to files and print summary
+    Use --save-to-files to save both original and simplified data to files with summary output.s
     """
     import asyncio
     return asyncio.run(fetch_discord_msgs(
