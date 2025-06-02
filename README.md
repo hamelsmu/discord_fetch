@@ -197,15 +197,19 @@ from discord_fetch.core import fetch_discord_msgs
 ```
 
 ``` python
-channel_id = 1369370266899185746
-original, simplified = await fetch_discord_msgs(
-    channel_id, 
-    save_original=False,    # Don't save raw discord messages to file
-    save_simplified=False,  # Don't save simplified discord messages to file
-    print_summary=False     # Don't print verbose logs
-)
+import asyncio
 
-print(f"Fetched {len(simplified['conversations'])} conversations")
+async def main():
+    channel_id = 1369370266899185746
+    original, simplified = await fetch_discord_msgs(
+        channel_id, 
+        save_original=False,    # Don't save raw discord messages to file
+        save_simplified=False,  # Don't save simplified discord messages to file
+        print_summary=False     # Don't print verbose logs
+    )
+    print(f"Fetched {len(simplified['conversations'])} conversations")
+
+asyncio.run(main())
 ```
 
     Connected as hamml#3190
