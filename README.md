@@ -148,8 +148,6 @@ messages = await fetch_messages_since_date(channel_id, yesterday)
 
 ## See It In Action
 
-https://github.com/user-attachments/assets/7ffc3d01-ca07-4f82-975d-baea87e181cb
-
 Here’s what the interactive CLI looks like:
 
     $ discord-fetch
