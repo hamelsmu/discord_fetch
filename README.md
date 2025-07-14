@@ -90,11 +90,12 @@ export DISCORD_TOKEN=your_bot_token_here
 discord-fetch
 ```
 
-The CLI will guide you through: 1. **Selecting a Discord server** from
-your bot’s servers 2. **Choosing channels** to export (one, multiple, or
-all)  
-3. **Picking output format** (single combined file or separate files) 4.
-**Watching progress** with live progress bars
+The CLI will guide you through:
+
+1.  **Selecting a Discord server** from your bot’s servers
+2.  **Choosing channels** to export (one, multiple, or all)  
+3.  **Picking output format** (single combined file or separate files)
+4.  **Watching progress** with live progress bars
 
 That’s it! Your Discord messages are now in clean JSON files ready for
 processing.
