@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Simple Discord Channel Fetcher – discord_fetch</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-2c2b2e643518224cf2d75a643cacf640.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Simple Discord Channel Fetcher – discord_fetch">
+<meta property="og:description" content="Fetch message history from discord for LLMs">
+<meta property="og:site_name" content="discord_fetch">
+<meta name="twitter:title" content="Simple Discord Channel Fetcher – discord_fetch">
+<meta name="twitter:description" content="Fetch message history from discord for LLMs">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">discord_fetch</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./core.html">Simple Discord Channel Fetcher</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Discord Fetch</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./core.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Simple Discord Channel Fetcher</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#list-channels" id="toc-list-channels" class="nav-link active" data-scroll-target="#list-channels">List Channels</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/hamelsmu/discord_fetch/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="core.html.md"><i class="bi bi-file-code"></i>CommonMark</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Simple Discord Channel Fetcher</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div id="cell-2" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>CHANNEL_ID <span class="op">=</span> <span class="dv">1369370266899185746</span>  <span class="co"># Replace with your channel ID</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-3" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> nest_asyncio</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> timedelta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-4" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>nest_asyncio.<span class="bu">apply</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You can use it like this:</p>
+<div id="cell-8" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch with default behavior (save and print)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>channel_data <span class="op">=</span> <span class="cf">await</span> fetch_channel_complete_history(CHANNEL_ID, print_summary<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(channel_data[<span class="st">'messages'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Connected as hamml#3190</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>216</code></pre>
+</div>
+</div>
+<section id="user" class="level5">
+<h5 class="anchored" data-anchor-id="user">User</h5>
+<div id="cell-13" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fetch and simplify in one call</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>original, simplified <span class="op">=</span> <span class="cf">await</span> fetch_discord_msgs(CHANNEL_ID, print_summary<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Fetching complete channel data...
+Connected as hamml#3190
+Fetching from #lesson-3-implementing-effective-evaluations in AI Evals For Engineers &amp; Technical PMs
+Fetching main channel messages...
+  Fetching thread: question -- when we fix the prompt, and
+    Found 2 thread messages
+  Fetching thread: For the second sql constraint error, why
+    Found 2 thread messages
+  Fetching thread: question - how do we assess that we
+    Found 7 thread messages
+  Fetching thread: @Hamel @sh_reya But, how do we even say
+    Found 3 thread messages
+  Fetching thread: @Hamel @sh_reya
+    Found 3 thread messages
+  Fetching thread: where do ML models like NLI, etc fall
+    Found 2 thread messages
+  Fetching thread: What are your thoughts on measuring
+    Found 2 thread messages
+  Fetching thread: Can you explain what you meant by using
+    Found 3 thread messages
+  Fetching thread: Would you recommend using LLM-as-judge
+    Found 3 thread messages
+  Fetching thread: Is it okay to have a related LLM (
+    Found 2 thread messages
+  Fetching thread: so assuming more expensive = better
+    Found 7 thread messages
+  Fetching thread: Has anyone had a good experience using
+    Found 2 thread messages
+  Fetching thread: so you have an LLM prompt for each
+    Found 8 thread messages
+  Fetching thread: Which LLM do we use as the judge? the
+    Found 2 thread messages
+  Fetching thread: It's possible that you'll address this
+    Found 2 thread messages
+  Fetching thread: oh no... 😞  my rule of thumb was to us
+    Found 3 thread messages
+  Fetching thread: Is it better to run one “judgement pass”
+    Found 2 thread messages
+  Fetching thread: any reason why you would "ask the LLM
+    Found 4 thread messages
+  Fetching thread: Silly question, how do folks structure
+    Found 2 thread messages
+  Fetching thread: How about assigning scores like
+    Found 2 thread messages
+  Fetching thread: When writing these llm as a judge
+    Found 2 thread messages
+  Fetching thread: How to approach time sensitive jobs?
+    Found 2 thread messages
+  Fetching thread: Once we have enough examples that fail/
+    Found 5 thread messages
+  Fetching thread: Do we go through the whole Analyze
+    Found 2 thread messages
+  Fetching thread: How much total data for this training an
+    Found 4 thread messages
+  Fetching thread: what are reasonable accuracy thresholds
+    Found 4 thread messages
+  Fetching thread: Ok, you've trained a judge, you've used
+    Found 2 thread messages
+  Fetching thread: how many examples in the prompt is too
+    Found 4 thread messages
+  Fetching thread: It’s fun that we’re OVERFITTING even if
+    Found 3 thread messages
+  Fetching thread: so basically we optimizing for recall
+    Found 2 thread messages
+  Fetching thread: @Hamel @sh_reya I have one more question
+    Found 4 thread messages
+  Fetching thread: Given that results are often on
+    Found 2 thread messages
+  Fetching thread: Is it better to make a confusion matrix?
+    Found 4 thread messages
+  Fetching thread: I would use LLMs from different families
+    Found 3 thread messages
+  Fetching thread: I have seen people using spearmen
+    Found 2 thread messages
+  Fetching thread: If LLMs struggle to analyze multiple
+    Found 2 thread messages
+  Fetching thread: 👏 for emphasizing that these metrics
+    Found 2 thread messages
+  Fetching thread: there was recently an article published
+    Found 2 thread messages
+  Fetching thread: Yeah, this is very true. You should
+    Found 12 thread messages
+  Fetching thread: i guess the question is - why is it
+    Found 3 thread messages
+  Fetching thread: why is it important to only run the
+    Found 2 thread messages
+  Fetching thread: What is the next step if you notice in
+    Found 2 thread messages
+  Fetching thread: What's the use of the training set? I
+    Found 11 thread messages
+  Fetching thread: Could you please share any research
+    Found 2 thread messages
+  Fetching thread: Is this adjustment (in this use case,
+    Found 2 thread messages
+  Fetching thread: What if the unlabelled traces do not
+    Found 2 thread messages
+  Fetching thread: Are we now testing the accuracy of the
+    Found 2 thread messages
+  Fetching thread: for the bootstrap CI estimates, if our
+    Found 2 thread messages
+  Fetching thread: I also found this super helpful to
+    Found 2 thread messages
+  Fetching thread: if TPR % and TNR % are both 100%, why is
+    Found 3 thread messages
+  Fetching thread: It's amazing how the corrections look
+    Found 2 thread messages
+  Fetching thread: is anyone feeling overwhelmed, i was
+    Found 2 thread messages
+  Fetching thread: fwiw, when you are reading back through
+    Found 2 thread messages
+  Fetching thread: I've spent the past 6 months at work
+    Found 4 thread messages
+  Fetching thread: for the precision/ recall balance, it's
+    Found 2 thread messages
+  Fetching thread: isnt TPR "true positive rate"? what am i
+    Found 2 thread messages
+  Fetching thread: Do you think we should have more than
+    Found 3 thread messages
+  Fetching thread: I know that we teased this idea, but I
+    Found 3 thread messages
+  Fetching thread: @Hamel @sh_reya Thanks a lot for the
+    Found 3 thread messages
+  Fetching thread: Thank you @Hamel and @sh_reya for
+    Found 8 thread messages
+  Fetching thread: Whaat
+    Found 4 thread messages
+  Fetching thread: Hi @sh_reya , hi @Hamel ,
+    Found 2 thread messages
+  Fetching thread: Cohen’s Kappa
+    Found 4 thread messages
+  Fetching thread: Just a heads up that the recording has
+    Found 3 thread messages
+  Fetching thread: BTS footage
+    Found 2 thread messages
+  Fetching thread: @sh_reya  I have a question regarding
+    Found 4 thread messages
+  Fetching thread: DSPy.SIMBA = quantitative + qualitative evals
+    Found 5 thread messages
+  Fetching thread: In Homework 3 in the labeled_traces.csv
+    Found 2 thread messages
+  Fetching thread: hey @sh_reya @Hamel If i have some false
+    Found 4 thread messages
+  Fetching thread: I have a question regarding the plot in
+    Found 10 thread messages
+Fetched 216 main messages
+Total threads found: 70
+
+=== Channel: #lesson-3-implementing-effective-evaluations ===
+Guild: AI Evals For Engineers &amp; Technical PMs
+Total messages: 216
+Total threads: 70
+  Thread 'question -- when we fix the prompt, and': 2 messages
+  Thread 'For the second sql constraint error, why': 2 messages
+  Thread 'question - how do we assess that we': 7 messages
+  Thread '@Hamel @sh_reya But, how do we even say': 3 messages
+  Thread '@Hamel @sh_reya': 3 messages
+  Thread 'where do ML models like NLI, etc fall': 2 messages
+  Thread 'What are your thoughts on measuring': 2 messages
+  Thread 'Can you explain what you meant by using': 3 messages
+  Thread 'Would you recommend using LLM-as-judge': 3 messages
+  Thread 'Is it okay to have a related LLM (': 2 messages
+  Thread 'so assuming more expensive = better': 7 messages
+  Thread 'Has anyone had a good experience using': 2 messages
+  Thread 'so you have an LLM prompt for each': 8 messages
+  Thread 'Which LLM do we use as the judge? the': 2 messages
+  Thread 'It's possible that you'll address this': 2 messages
+  Thread 'oh no... 😞  my rule of thumb was to us': 3 messages
+  Thread 'Is it better to run one “judgement pass”': 2 messages
+  Thread 'any reason why you would "ask the LLM': 4 messages
+  Thread 'Silly question, how do folks structure': 2 messages
+  Thread 'How about assigning scores like': 2 messages
+  Thread 'When writing these llm as a judge': 2 messages
+  Thread 'How to approach time sensitive jobs?': 2 messages
+  Thread 'Once we have enough examples that fail/': 5 messages
+  Thread 'Do we go through the whole Analyze': 2 messages
+  Thread 'How much total data for this training an': 4 messages
+  Thread 'what are reasonable accuracy thresholds': 4 messages
+  Thread 'Ok, you've trained a judge, you've used': 2 messages
+  Thread 'how many examples in the prompt is too': 4 messages
+  Thread 'It’s fun that we’re OVERFITTING even if': 3 messages
+  Thread 'so basically we optimizing for recall': 2 messages
+  Thread '@Hamel @sh_reya I have one more question': 4 messages
+  Thread 'Given that results are often on': 2 messages
+  Thread 'Is it better to make a confusion matrix?': 4 messages
+  Thread 'I would use LLMs from different families': 3 messages
+  Thread 'I have seen people using spearmen': 2 messages
+  Thread 'If LLMs struggle to analyze multiple': 2 messages
+  Thread '👏 for emphasizing that these metrics': 2 messages
+  Thread 'there was recently an article published': 2 messages
+  Thread 'Yeah, this is very true. You should': 12 messages
+  Thread 'i guess the question is - why is it': 3 messages
+  Thread 'why is it important to only run the': 2 messages
+  Thread 'What is the next step if you notice in': 2 messages
+  Thread 'What's the use of the training set? I': 11 messages
+  Thread 'Could you please share any research': 2 messages
+  Thread 'Is this adjustment (in this use case,': 2 messages
+  Thread 'What if the unlabelled traces do not': 2 messages
+  Thread 'Are we now testing the accuracy of the': 2 messages
+  Thread 'for the bootstrap CI estimates, if our': 2 messages
+  Thread 'I also found this super helpful to': 2 messages
+  Thread 'if TPR % and TNR % are both 100%, why is': 3 messages
+  Thread 'It's amazing how the corrections look': 2 messages
+  Thread 'is anyone feeling overwhelmed, i was': 2 messages
+  Thread 'fwiw, when you are reading back through': 2 messages
+  Thread 'I've spent the past 6 months at work': 4 messages
+  Thread 'for the precision/ recall balance, it's': 2 messages
+  Thread 'isnt TPR "true positive rate"? what am i': 2 messages
+  Thread 'Do you think we should have more than': 3 messages
+  Thread 'I know that we teased this idea, but I': 3 messages
+  Thread '@Hamel @sh_reya Thanks a lot for the': 3 messages
+  Thread 'Thank you @Hamel and @sh_reya for': 8 messages
+  Thread 'Whaat': 4 messages
+  Thread 'Hi @sh_reya , hi @Hamel ,': 2 messages
+  Thread 'Cohen’s Kappa': 4 messages
+  Thread 'Just a heads up that the recording has': 3 messages
+  Thread 'BTS footage': 2 messages
+  Thread '@sh_reya  I have a question regarding': 4 messages
+  Thread 'DSPy.SIMBA = quantitative + qualitative evals': 5 messages
+  Thread 'In Homework 3 in the labeled_traces.csv': 2 messages
+  Thread 'hey @sh_reya @Hamel If i have some false': 4 messages
+  Thread 'I have a question regarding the plot in': 10 messages
+
+Complete channel data saved to: discord_channel_lesson-3-implementing-effective-evaluations_20250714_131522.json
+File size: 377.2 KB
+=== Simplified Channel: lesson-3-implementing-effective-evaluations ===
+Total conversations: 179
+
+--- Conversation 1 ---
+Main: davidh5633
+  Seems relevant to this course topic:
+
+Evaluation Driven Development for Agentic Systems
+https://www....
+
+--- Conversation 2 ---
+Main: davidh5633
+  I gather that alignment for the LLM-Judge is a larger up-front process as discussed through chapter ...
+
+--- Conversation 3 ---
+Main: davidh5633
+  Overall, this chapter definitely pointed out a 'hidden cost' of adding features to an LLM applicatio...
+
+Simplified data saved to: discord_simplified_lesson-3-implementing-effective-evaluations_20250714_131522.json
+File size: 100.9 KB
+
+✅ Successfully fetched channel data!
+📄 Original data: 216 messages, 70 threads
+💬 Simplified data: 179 conversations</code></pre>
+</div>
+</div>
+</section>
+<section id="list-channels" class="level2">
+<h2 class="anchored" data-anchor-id="list-channels">List Channels</h2>
+<p>List available channels</p>
+<div id="cell-18" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First, list all guilds</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>guilds <span class="op">=</span> <span class="cf">await</span> list_all_guilds()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>guilds</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>[{'guild_name': 'AI Evals For Engineers &amp; Technical PMs',
+  'guild_id': '1368666390185246770',
+  'member_count': 871,
+  'text_channels_count': 84}]</code></pre>
+</div>
+</div>
+<div id="cell-21" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To run the interactive CLI, use:</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># interactive_cli()</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Or from command line after installing the package:</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># discord-fetch-interactive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-22" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interactive_discord_fetch()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/hamelsmu\.github\.io\/discord_fetch");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/hamelsmu/discord_fetch/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

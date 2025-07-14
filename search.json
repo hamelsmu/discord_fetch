@@ -1,0 +1,112 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Discord Fetch",
+    "section": "",
+    "text": "Discord conversations contain valuable knowledge, but Discord’s UI makes it hard to: - Export community discussions for analysis - Archive important conversations before they’re lost\n- Process messages with LLMs or data tools - Search across multiple channels efficiently\nDiscord Fetch solves this by providing a simple interactive CLI that exports Discord messages to clean JSON files, removing all the complexity of Discord’s API.",
+    "crumbs": [
+      "Discord Fetch"
+    ]
+  },
+  {
+    "objectID": "index.html#why-discord-fetch",
+    "href": "index.html#why-discord-fetch",
+    "title": "Discord Fetch",
+    "section": "",
+    "text": "Discord conversations contain valuable knowledge, but Discord’s UI makes it hard to: - Export community discussions for analysis - Archive important conversations before they’re lost\n- Process messages with LLMs or data tools - Search across multiple channels efficiently\nDiscord Fetch solves this by providing a simple interactive CLI that exports Discord messages to clean JSON files, removing all the complexity of Discord’s API.",
+    "crumbs": [
+      "Discord Fetch"
+    ]
+  },
+  {
+    "objectID": "index.html#installation",
+    "href": "index.html#installation",
+    "title": "Discord Fetch",
+    "section": "Installation",
+    "text": "Installation\npip install discord-fetch\nOr install from source:\ngit clone https://github.com/hamelsmu/discord_fetch.git\ncd discord_fetch\npip install -e .\n\n\n\n\n\n\nDiscord Bot Setup\n\n\n\n\n\nBefore using this tool, you need to create a Discord bot and obtain a token:\n\n1. Create a Discord Application\n\nGo to the Discord Developer Portal\nClick “New Application” and give it a name\nNavigate to the “Bot” section in the sidebar\nClick “Add Bot”\nUnder the “Token” section, click “Copy” to get your bot token\n\n\n\n2. Required Bot Permissions\nYour bot needs the following permissions: - View Channels - To see the channels in the server - Read Message History - To fetch historical messages - Read Messages/View Channels - Basic read access\n\n\n3. Bot Scopes and OAuth2\nWhen inviting your bot to a server, use these scopes:\n\nbot - Basic bot permissions\napplications.commands (optional) - If you plan to add slash commands\n\n\n\n4. Invite the Bot to Your Server\n\nIn the Discord Developer Portal, go to “OAuth2” &gt; “URL Generator”\nSelect the bot scope\nSelect the required permissions listed above\nCopy the generated URL and open it in your browser\nSelect the server you want to add the bot to\n\n\n\n5. Environment Setup\nCreate this environment variable\nDISCORD_TOKEN=your_bot_token_here",
+    "crumbs": [
+      "Discord Fetch"
+    ]
+  },
+  {
+    "objectID": "index.html#getting-started-in-2-minutes",
+    "href": "index.html#getting-started-in-2-minutes",
+    "title": "Discord Fetch",
+    "section": "Getting Started in 2 Minutes",
+    "text": "Getting Started in 2 Minutes\nOnce you’ve set up your Discord bot (see setup section below), using Discord Fetch is simple:\n# Install the tool\npip install discord-fetch\n\n# Set your bot token\nexport DISCORD_TOKEN=your_bot_token_here\n\n# Run the interactive CLI\ndiscord-fetch\nThe CLI will guide you through:\n\nSelecting a Discord server from your bot’s servers\nChoosing channels to export (one, multiple, or all)\n\nPicking output format (single combined file or separate files)\nWatching progress with live progress bars\n\nThat’s it! Your Discord messages are now in clean JSON files ready for processing.\nLive example",
+    "crumbs": [
+      "Discord Fetch"
+    ]
+  },
+  {
+    "objectID": "index.html#what-you-can-do-with-discord-fetch",
+    "href": "index.html#what-you-can-do-with-discord-fetch",
+    "title": "Discord Fetch",
+    "section": "What You Can Do With Discord Fetch",
+    "text": "What You Can Do With Discord Fetch\n\n🎯 For Quick Channel Exports\nUse the interactive CLI when you want to: - Export specific channels from a Discord server - Archive channels before they’re deleted - Get data for one-time analysis\nExample: Export your project’s #general and #dev channels\ndiscord-fetch\n# Select your server, choose specific channels, export to JSON\n\n\n📊 For Bulk Server Exports\nPerfect when you need to: - Archive an entire Discord server - Migrate community knowledge to another platform - Create regular backups of all channels\nExample: Export all 84 channels from a large community\ndiscord-fetch\n# Select server, choose \"ALL CHANNELS\", save to directory\n\n\n🔧 For Custom Integrations\nUse the Python API when you need: - Automated exports on a schedule - Custom filtering or processing - Integration with other Python tools\nExample: Auto-export new messages daily\nfrom discord_fetch.core import fetch_messages_since_date\nfrom datetime import datetime, timedelta\n\n# Fetch only messages from last 24 hours\nyesterday = datetime.now() - timedelta(days=1)\nmessages = await fetch_messages_since_date(channel_id, yesterday)",
+    "crumbs": [
+      "Discord Fetch"
+    ]
+  },
+  {
+    "objectID": "index.html#see-it-in-action",
+    "href": "index.html#see-it-in-action",
+    "title": "Discord Fetch",
+    "section": "See It In Action",
+    "text": "See It In Action\nHere’s what the interactive CLI looks like:\n$ discord-fetch\n\nDiscord Channel Fetcher\n\nAvailable Guilds:\n1. AI Evals For Engineers & Technical PMs (84 channels)\n2. LangChain Community (126 channels)\n3. OpenAI DevDay (45 channels)\n\nSelect guild number [1]: 1\n\nChannels in AI Evals For Engineers & Technical PMs:\n┏━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┓\n┃ #  ┃ Channel                        ┃ Category         ┃ ID                ┃\n┡━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━┩\n│ 0  │ ALL CHANNELS                   │ —                │ —                 │\n│ 1  │ general                        │ Text Channels    │ 136866639069682...│\n│ 2  │ announcements                  │ Text Channels    │ 137615200096996...│\n│ 3  │ introductions                  │ Text Channels    │ 137655886438386...│\n│ 4  │ course-discussions             │ Course           │ 138234567891234...│\n└────┴────────────────────────────────┴──────────────────┴───────────────────┘\n\nSelect channel number (0 for all) [0]: 0\n\nSelected: All 84 channels\n\nOutput Options:\n1. Concatenate to single file\n2. Separate files in directory\n\nSelect output option [1]: 2\n\nEnter output directory [./discord_output]: ./ai-evals-export\n\n#general                      ⠸ ████████████████████████████████████████ 100/100 ✓ Complete\n#announcements                ⠼ ████████████████████████████████████████ 100/100 ✓ Complete  \n#introductions                ⠴ ████████████████████████████████████████ 100/100 ✓ Complete\n#course-discussions           ⠦ ██████████████████░░░░░░░░░░░░░░░░░░░░░  47/100 Fetching...\nTotal                         ⠧ ██████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░   4/84  4/84 completed\n\n✓ Saved 84 files to ./ai-evals-export\n\nSuccessfully fetched 84 out of 84 channels!",
+    "crumbs": [
+      "Discord Fetch"
+    ]
+  },
+  {
+    "objectID": "index.html#which-tool-should-i-use",
+    "href": "index.html#which-tool-should-i-use",
+    "title": "Discord Fetch",
+    "section": "Which Tool Should I Use?",
+    "text": "Which Tool Should I Use?\n\nUse discord-fetch (Interactive CLI) when:\n✅ You want a guided experience with visual feedback\n✅ You’re exporting channels for analysis or archival\n✅ You need to browse and select from available channels\n✅ You’re not familiar with Discord channel IDs\n\n\nUse fetch_discord_msgs (Direct CLI) when:\n✅ You know the exact channel ID to export\n✅ You want to pipe output directly to another tool\n✅ You’re scripting or automating exports\n✅ You need stdout output for processing\n\n\nUse the Python API when:\n✅ You need custom filtering or processing logic\n✅ You’re building a larger application\n✅ You want to fetch only new messages since a date\n✅ You need programmatic access to the data\nQuick decision: If you’re unsure, start with discord-fetch - it’s the easiest way to get started!",
+    "crumbs": [
+      "Discord Fetch"
+    ]
+  },
+  {
+    "objectID": "index.html#advanced-python-api",
+    "href": "index.html#advanced-python-api",
+    "title": "Discord Fetch",
+    "section": "Advanced Python API",
+    "text": "Advanced Python API\nFor developers who need programmatic access:\n\nBasic Channel Export\nfrom discord_fetch.core import fetch_discord_msgs\nimport asyncio\n\n# Export a single channel\nchannel_id = 1369370266899185746\noriginal, simplified = await fetch_discord_msgs(\n    channel_id, \n    save_original=False,    # Don't save to file\n    save_simplified=False,  # Don't save to file  \n    print_summary=False     # Silent operation\n)\n\n\nList All Available Channels\nfrom discord_fetch.core import list_all_channels\n\n# Get all channels your bot can see\nchannels = await list_all_channels()\nfor ch in channels:\n    print(f\"{ch['guild_name']} - #{ch['channel_name']} ({ch['channel_id']})\")\n\n\nFetch Only New Messages\nfrom discord_fetch.core import fetch_messages_since_date\nfrom datetime import datetime, timedelta\n\n# Get messages from last 7 days\nlast_week = datetime.now() - timedelta(days=7)\nrecent = await fetch_messages_since_date(channel_id, last_week)\n\n\nFind Active Channels\nfrom discord_fetch.core import list_channels_with_new_messages\n\n# Find channels with activity since a date\nactive = await list_channels_with_new_messages(\"01-01-2024\")\nfor guild, data in active.items():\n    for ch in data['channels_with_new_messages']:\n        print(f\"{ch['channel_name']}: {ch['new_message_count']} new messages\")",
+    "crumbs": [
+      "Discord Fetch"
+    ]
+  },
+  {
+    "objectID": "index.html#understanding-the-output-format",
+    "href": "index.html#understanding-the-output-format",
+    "title": "Discord Fetch",
+    "section": "Understanding the Output Format",
+    "text": "Understanding the Output Format\nDiscord Fetch simplifies complex Discord data into clean JSON:\n\nOriginal Format (with metadata)\n{\n  \"channel_info\": {...},\n  \"messages\": [\n    {\n      \"id\": \"123456789\",\n      \"author\": {...},\n      \"content\": \"Message text\",\n      \"timestamp\": \"2024-01-15T10:30:00\",\n      \"attachments\": [...],\n      \"reactions\": [...],\n      \"reply_to\": {...}\n    }\n  ],\n  \"threads\": {...}\n}\n\n\nSimplified Format (for processing)\n{\n  \"channel\": \"general\",\n  \"conversations\": [\n    {\n      \"main_message\": {\n        \"author\": \"alice\",\n        \"content\": \"Has anyone tried the new API?\"\n      },\n      \"replies\": [\n        {\n          \"author\": \"bob\",\n          \"content\": \"Yes! It's much faster now\"\n        },\n        {\n          \"author\": \"charlie\",\n          \"content\": \"Agreed, the response time improved by 50%\"\n        }\n      ]\n    }\n  ]\n}\nThe simplified format: - Groups related messages into conversations - Removes IDs, timestamps, and metadata - Reduces file size by ~75% - Perfect for LLMs and analysis tools",
+    "crumbs": [
+      "Discord Fetch"
+    ]
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "Simple Discord Channel Fetcher",
+    "section": "",
+    "text": "CHANNEL_ID = 1369370266899185746  # Replace with your channel ID\nimport nest_asyncio\nfrom datetime import timedelta\nnest_asyncio.apply()\nYou can use it like this:\n# Fetch with default behavior (save and print)\nchannel_data = await fetch_channel_complete_history(CHANNEL_ID, print_summary=False)\nlen(channel_data['messages'])\n\nConnected as hamml#3190\n\n\n216",
+    "crumbs": [
+      "Simple Discord Channel Fetcher"
+    ]
+  },
+  {
+    "objectID": "core.html#list-channels",
+    "href": "core.html#list-channels",
+    "title": "Simple Discord Channel Fetcher",
+    "section": "List Channels",
+    "text": "List Channels\nList available channels\n\n# First, list all guilds\nguilds = await list_all_guilds()\nguilds\n\n[{'guild_name': 'AI Evals For Engineers & Technical PMs',\n  'guild_id': '1368666390185246770',\n  'member_count': 871,\n  'text_channels_count': 84}]\n\n\n\n# To run the interactive CLI, use:\n# interactive_cli()\n# Or from command line after installing the package:\n# discord-fetch-interactive\n\n\n# interactive_discord_fetch()",
+    "crumbs": [
+      "Simple Discord Channel Fetcher"
+    ]
+  }
+]
