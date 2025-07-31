@@ -1,0 +1,1 @@
+Sitemap: https://hamelsmu.github.io/discord_fetch/sitemap.xml
